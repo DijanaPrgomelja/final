@@ -2,16 +2,27 @@ const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema(
   {
-    username: {
-      type: String,
-      unique: true,
-   },
     password: String,
     role: String,
     firstName: String,
     lastName: String,
     profilePicture: String,
     email: String,
+    typeOfTherapy: String,
+    description: String,
+    photos: String,
+    contactDetails: [
+      {
+        address: String,
+        phoneNumber: Number,
+      }
+    ],
+    favourite: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ], 
     reviews: [
       {
         type: Schema.Types.ObjectId,

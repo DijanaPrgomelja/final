@@ -5,18 +5,21 @@ import { AuthContext } from '../context/auth'
 
 export default function Login() {
 
-	const [username, setUsername] = useState('');
+	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [errorMessage, setErrorMessage] = useState(undefined);
-    const navigate = useNavigate()
-    const { storeToken, verifyStoredToken } = useContext(AuthContext)
-    const handleSubmit = e => {
+
+	const navigate = useNavigate()
+
+	const { storeToken, verifyStoredToken } = useContext(AuthContext)
+
+	const handleSubmit = e => {
 		e.preventDefault()
-		const requestBody = { username, password }
+		const requestBody = { email, password }
 		axios.post('/api/auth/login', requestBody)
 			.then(response => {
 				// redirect to projects
-				console.log('token')
+				console.log('i have a token mothafukkas')
 				const token = response.data.authToken
 				// store the token
 				storeToken(token)
@@ -32,15 +35,15 @@ export default function Login() {
 			})
 	}
 
-	const handleUsername = e => setUsername(e.target.value)
+	const handleEmail = e => setEmail(e.target.value)
 	const handlePassword = e => setPassword(e.target.value)
 
 	return (
 		<>
 			<h1>Login</h1>
 			<form onSubmit={handleSubmit}>
-				<label htmlFor="username">Username: </label>
-				<input type="text" value={username} onChange={handleUsername} />
+				<label htmlFor="email">Email: </label>
+				<input type="text" value={email} onChange={handleEmail} />
 				<label htmlFor="password">Password: </label>
 				<input type="password" value={password} onChange={handlePassword} />
 				<button type="submit">Log In</button>
