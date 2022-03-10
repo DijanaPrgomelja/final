@@ -3,9 +3,12 @@ import axios from "axios";
 
 const service = axios.create({
     // make sure you use PORT = 5005 (the port where our server is running)
-    baseURL: 'http://localhost:5005/api',
+    baseURL: 'https://therapistfinder.herokuapp.com//api',
     withCredentials: true, // => you might need this when having the users in the app
   });
+
+  const storedToken = localStorage.getItem("authToken");
+
   
   const errorHandler = (err) => {
     throw err;
@@ -13,7 +16,7 @@ const service = axios.create({
   
   const handleUpload = (file) => {
     return service
-      .post('/crud/upload', file)
+      .post('/crud/upload', file, { headers: { Authorization: `Bearer ${storedToken}` } })
       .then((res) => res.data)
   
       .catch(errorHandler);
@@ -21,7 +24,7 @@ const service = axios.create({
   
   const handleProfileUpload = (file) => {
     return service
-      .post('/crud/profile-picture/update', file)
+      .post('/crud/profile-picture/update', file, { headers: { Authorization: `Bearer ${storedToken}` } })
       .then((res) => res.data)
   
       .catch(errorHandler);

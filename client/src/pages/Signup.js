@@ -6,7 +6,8 @@ import { AuthContext } from '../context/auth'
 
 
 
-export default function Signup() {
+
+ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [typeOfTherapy, setTypeOfTherapy] = useState("");
@@ -38,7 +39,7 @@ export default function Signup() {
 
   const navigate = useNavigate();
 
-  const { storeToken, verifyStoredoken, user } = useContext(AuthContext)
+  // const { storeToken, verifyStoredoken, user } = useContext(AuthContext)
 
 
   const handleSubmitUser = (e) => {

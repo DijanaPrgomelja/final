@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {Card, Button } from "react-bootstrap";
 import { AuthContext } from "../context/auth";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
@@ -147,6 +147,9 @@ export default function UserProfilePage(props) {
             );
           }
         })}
+        <Link to={`/users/edit/${therapist._id}`}>
+          <button>Edit your profile</button>
+        </Link>
       </>
     );
   }
@@ -177,6 +180,9 @@ export default function UserProfilePage(props) {
             </Card.Body>
           </Card>
         </div>
+        <Link to={`/users/edit/${userFromState._id}`}>
+          <button>Edit your profile</button>
+        </Link>
       </>
     );
   } else {

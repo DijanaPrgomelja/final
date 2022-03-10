@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Card } from "react-bootstrap";
+import { Card, Button, } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import {Navbar} from 'react-bootstrap';
 
 export default function Homepage() {
   const [query, setQuery] = useState("");
@@ -60,7 +61,9 @@ export default function Homepage() {
           entire body and the whole person, rather than curing ailments in isolation as modern medicine does.</p>
         </div> */}
       </div>
-      {therapists.map((therapist) => {
+      <input type="search" value={query} onChange={handleSearch} placeholder="Search.."/>
+           
+      {results.map((therapist) => {
         return (
           <div>
             <Card
@@ -84,9 +87,7 @@ export default function Homepage() {
               />
               <Card.Body>
                 <Card.Title>Name: {therapist.name}</Card.Title>
-                <Card.Title>
-                  Type of Therapy: {therapist.typeOfTherapy}
-                </Card.Title>
+                <Card.Title>Type of Therapy: {therapist.typeOfTherapy}</Card.Title>
                 <Card.Link href={`/users/${therapist._id}`}>Details</Card.Link>
               </Card.Body>
             </Card>

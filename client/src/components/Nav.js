@@ -19,7 +19,6 @@ export default function Nav() {
                 Home
               </button>
             </Link>
-            <input type="text" placeholder="Search.."></input>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text>
