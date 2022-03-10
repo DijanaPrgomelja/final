@@ -1,8 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
 
-
-
 const service = axios.create({
     // make sure you use PORT = 5005 (the port where our server is running)
     baseURL: 'http://localhost:5005/api',
@@ -29,9 +27,7 @@ const service = axios.create({
       .catch(errorHandler);
   };
   
- 
-  
-  export default {
+    export default {
     service,
     handleUpload,
     handleProfileUpload,

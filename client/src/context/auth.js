@@ -13,16 +13,14 @@ function AuthProviderWrapper(props) {
 		// store this token in local storage
 		localStorage.setItem('authToken', token)
 	}
-
-	const logoutUser = () => {
+     const logoutUser = () => {
 		// remove the token from local storage
 		localStorage.removeItem('authToken')
 		// update the state
 		setIsLoggedIn(false)
 		setUser(null)
 	}
-
-	const verifyStoredToken = () => {
+     const verifyStoredToken = () => {
 		// check local storage
 		const storedToken = localStorage.getItem('authToken')
 		if (storedToken) {

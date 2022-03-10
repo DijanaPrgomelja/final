@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const User = require('../models/Reviews');
-//const Review = require('../models/Review');
+const User = require('../models/Review');
+const Review = require('../models/Review');
 
 const fileUploader = require('../config/cloudinary');
 const { response } = require('express');
@@ -30,6 +30,23 @@ router.post('/upload', fileUploader.single('imageURL'), (req, res, next) => {
       res.json({ secure_url: req.file.path });
     }
   );
-  
+
+
+  router.get('/reviews', (req, res, next) => {
+    Review.find().populate('creator', 'reviewTherapist')
+      .then(reviews => {
+        res.status(200).json(reviews)
+      })
+  });
+
+  router.post('/therapist/:id', (req, res, next) => {
+    const { reviewText, reviewTherapist, creator } = req.body  
+    console.log("req from review payload is", req.payload);
+    Review.create({ reviewText, reviewTherapist, creator: req.payload._id})    
+    .then(review => {
+      res.status(201).json(review)
+    })
+    .catch(err => next(err))
+  })
 
   module.exports = router;

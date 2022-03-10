@@ -17,13 +17,16 @@ require("./config")(app);
 
 // 👇 Start handling routes here
 // Contrary to the views version, all routes are controlled from the routes/index.js
-
+const {isAuthenticated} = require('./middleware/jwt')
 
 const auth = require("./routes/auth");
 app.use("/api/auth", auth);
 
 const crud =require('./routes/crud');
-app.use('/api/crud', crud);
+app.use('/api/crud', isAuthenticated, crud);
+
+const users =require('./routes/users');
+app.use('/users', users);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);

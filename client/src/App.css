@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+.backgroundImage{
+  object-fit: cover;
+  position: relative;
+}
+
+

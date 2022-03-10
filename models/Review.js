@@ -6,13 +6,11 @@ const reviewSchema = new Schema ({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    reviewAuthor: {
+    creator: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    },
-    reviewAuthorUsername: 'String'
+    }
 })
 
 const Review = model("Review", reviewSchema);
-
 module.exports = Review;

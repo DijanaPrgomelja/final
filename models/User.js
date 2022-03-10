@@ -4,19 +4,15 @@ const userSchema = new Schema(
   {
     password: String,
     role: String,
-    firstName: String,
-    lastName: String,
+    name: String,
     profilePicture: String,
     email: String,
+    aboutMe: String,
     typeOfTherapy: String,
     description: String,
     photos: String,
-    contactDetails: [
-      {
-        address: String,
-        phoneNumber: Number,
-      }
-    ],
+    address: String,
+    phoneNumber: Number,
     favourite: [
       {
         type: Schema.Types.ObjectId,

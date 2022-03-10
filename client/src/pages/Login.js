@@ -11,7 +11,7 @@ export default function Login() {
 
 	const navigate = useNavigate()
 
-	const { storeToken, verifyStoredToken } = useContext(AuthContext)
+	const { storeToken, verifyStoredToken, user } = useContext(AuthContext)
 
 	const handleSubmit = e => {
 		e.preventDefault()
@@ -19,14 +19,14 @@ export default function Login() {
 		axios.post('/api/auth/login', requestBody)
 			.then(response => {
 				// redirect to projects
-				console.log('i have a token mothafukkas')
 				const token = response.data.authToken
 				// store the token
 				storeToken(token)
 				verifyStoredToken()
 					.then(() => {
 						// redirect to projects
-						navigate('/')
+						console.log('logged in user:', user)
+						navigate(`/users/${user._id}`)
 					})
 			})
 			.catch(err => {
