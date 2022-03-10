@@ -2,10 +2,10 @@ import React from "react";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import { AuthContext } from '../context/auth'
+import {Card, Button } from "react-bootstrap";
+import { AuthContext } from "../context/auth";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default function UserProfilePage(props) {
   const { id } = useParams();
@@ -15,10 +15,9 @@ export default function UserProfilePage(props) {
   const [reviews, setReviews] = useState([]);
   const storedToken = localStorage.getItem("authToken");
 
-  const {  user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -31,53 +30,64 @@ export default function UserProfilePage(props) {
           setUser(response.data);
         }
         if (response.data.role === "therapist") {
-          setTherapist(response.data)
+          setTherapist(response.data);
         }
       })
       .catch((err) => console.log(err));
   }, []);
 
-  const handleSubmitReview = e => {
-		// e.preventDefault()
-		const requestBody = { reviewText, reviewTherapist: therapist._id}
-		axios.post(`/api/crud/therapist/${id}`,requestBody, {
-      headers: {Authorization: `Bearer ${storedToken}`},
-    })
-			.then(response => {
-					console.log("review from client side", response)
-          // setReviews(response.data, ...reviews)
-           
-			})
-			.catch(err => {
-				console.log(err)
-			})
-	}
+  const handleSubmitReview = (e) => {
+    // e.preventDefault()
+    const requestBody = { reviewText, reviewTherapist: therapist._id };
+    axios
+      .post(`/api/crud/therapist/${id}`, requestBody, {
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
+      .then((response) => {
+        console.log("review from client side", response);
+        // setReviews(response.data, ...reviews)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  const handleReview = e => setReviewText(e.target.value);
+  const handleReview = (e) => setReviewText(e.target.value);
 
-    // get all the therapists from the backend / server
-    const getReviews = () => {
-      // for every request to user route we need to also send the token
-      axios
-        .get("/api/crud/reviews", { headers: { Authorization: `Bearer ${storedToken}` } })
-        .then((response) => {
-          console.log('these are the reviews',response.data);
-          // set the state of therapists
-          setReviews(response.data);
-          // navigate(`/users/${id}`)
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+  // get all the therapists from the backend / server
+  const getReviews = () => {
+    // for every request to user route we need to also send the token
+    axios
+      .get("/api/crud/reviews", {
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
+      .then((response) => {
+        console.log("these are the reviews", response.data);
+        // set the state of therapists
+        setReviews(response.data);
+        // navigate(`/users/${id}`)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-    useEffect(() => {
-      getReviews();
-    }, []);
-    
+  useEffect(() => {
+    getReviews();
+  }, []);
 
-    // if (reviews){console.log('this therapist', therapist._id)
-    // console.log('this therapist from reviews', reviews[0].reviewTherapist)}
+  const deleteReview = (id) => {
+    const storedToken = localStorage.getItem('authToken')
+    axios
+      .delete(`/api/crud/review/${id}`, { headers: { Authorization: `Bearer ${storedToken}` } })
+      .then(() => {
+       // redirect to the Profile Page
+       getReviews();      })
+      .catch((err) => console.log(err));
+  };
+
+  // if (reviews){console.log('this therapist', therapist._id)
+  // console.log('this therapist from reviews', reviews[0].reviewTherapist)}
 
   if (therapist) {
     return (
@@ -93,12 +103,13 @@ export default function UserProfilePage(props) {
           ></img>
         </div>
         <div>
-          <Card style={{ width: "18rem"}}>
+          <Card style={{ width: "18rem" }}>
             <Card.Img
               variant="top"
               src={therapist.profilePicture}
               alt="userPhoto"
               className="card-img-top rounded mx-auto d-block"
+              className="mb-3"
               style={{ width: "200px" }}
             />
             <Card.Body>
@@ -112,29 +123,34 @@ export default function UserProfilePage(props) {
           <p>Type of Therapy: {therapist.typeOfTherapy}</p>
           <p>Description of the Therapy: {therapist.description}</p>
         </div>
-        {therapist._id !== user._id &&
-        <form onSubmit={handleSubmitReview}>
-        <label htmlFor="review">Review me: </label>
-				<input type="text" value={reviewText} onChange={handleReview} />
-        <button type="submit">Submit your review</button>
-        </form>}
+        {therapist._id !== user._id && (
+          <form onSubmit={handleSubmitReview}>
+            <label htmlFor="review">Review me: </label>
+            <input type="text" value={reviewText} onChange={handleReview} />
+            <button className="btn btn-sm btn-info" type="submit">Submit your review</button>
+          </form>
+        )}
 
         <h4>All the reviews for this therapist</h4>
-          {reviews.map(review => {
-            if (therapist._id === review.reviewTherapist){
-              return (
-                <div key={review._id}>
-                  {/* <h6>Review by:</h6> */}
+        {reviews.map((review) => {
+          if (therapist._id === review.reviewTherapist) {
+            return (
+              <div key={review._id}>
+                {/* <h6>Review by:</h6> */}
                 <p>{review.reviewText}</p>
-                </div>
-                
-                )
-              }
-          })}
+                <button onClick={() => {
+                    deleteReview(review._id);
+                  }}
+                  className="btn btn-sm btn-danger">Delete the review
+                </button>
+              </div>
+            );
+          }
+        })}
       </>
     );
   }
-   if (userFromState) {
+  if (userFromState) {
     return (
       <>
         <div>
@@ -162,9 +178,8 @@ export default function UserProfilePage(props) {
           </Card>
         </div>
       </>
-    )
-  } 
-  else {
-    return <div></div>
+    );
+  } else {
+    return <div></div>;
   }
 }

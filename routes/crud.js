@@ -49,4 +49,11 @@ router.post('/upload', fileUploader.single('imageURL'), (req, res, next) => {
     .catch(err => next(err))
   })
 
+  router.delete('/review/:id', (req, res, next) => {
+    Review.findByIdAndDelete(req.params.id)
+    .then(() => {
+    res.status(200).json({ message: "Review deleted"})
+    })
+    .catch(err => next(err))
+  });
   module.exports = router;

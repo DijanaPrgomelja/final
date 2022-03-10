@@ -34,7 +34,7 @@ export default function Signup() {
       })
       .catch((err) => console.log("Error when uploading the file: ", err));
   };
-  
+
 
   const navigate = useNavigate();
 
